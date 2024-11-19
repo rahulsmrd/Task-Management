@@ -27,14 +27,19 @@
   - ``` bash
       pip install -r requirements.txt
     ```
-- Run the App
+- Migrate the database
   - ``` bash
     python manage.py makemigrations
     ```
   - ``` bash
      python manage.py migrate
     ```
+- Run Tests
+  - ``` bash
+     python manage.py test
+    ```
+- Run server
   - ``` bash
      python manage.py runserver
     ```
-  - Navigate to the Link and view the website.
+- Navigate to [http://127.0.0.1:8000/api/v1/docs/](http://127.0.0.1:8000/api/v1/docs/)
