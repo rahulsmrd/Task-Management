@@ -1,0 +1,39 @@
+{% extends 'task/base.html' %}
+{% block body %}
+<h1 class="text-center">LogIn</h1>
+<div class="container my-5">
+    <form method="post" class="text-center m-5">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <h3>{{ form.username.label }} :</h3>
+                <h4>{{ form.username }}</h4>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <h3>{{ form.password.label }} :</h3>
+                <h4>{{ form.password }}</h4>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <button class="btn btn-outline-success px-5 fs-5 form-control">LogIn</button>
+            </div>
+        </div>
+        <br>
+    </form>
+</div>
+
+<script>
+    username = document.getElementById('id_username');
+    password = document.getElementById('id_password');
+    username.classList.add('form-control');
+    password.classList.add('form-control');
+</script>
+{% endblock %}

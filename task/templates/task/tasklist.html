@@ -1,0 +1,41 @@
+{% extends 'task/base.html' %}
+{% block list_activate %}active{% endblock %}
+{% block body %}
+<div class="card px-5" style="border: 0.1em solid black;border-radius: 0.5em;">
+    <div class="card-body">
+        <h1 class="text-center"><b><u>Tasks List</u></b></h1>
+        {% for task in task_list %}
+        <a href="{% url 'task:task_detail' task.id %}" style="color: black; text-decoration: none;">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex">
+                    <p style="color: rgb(179, 179, 179);" class="me-auto">Task ID : {{task.task_id}} </p>
+                    <p class="text-end">{{task.user.email}}</p>
+                </div>
+                <div class="d-flex">
+                    <h2 class="me-auto" style="max-width: 80%;"><u>{{task.title | truncatewords:5}}</u></h2>
+                    {% if task.status == 'Pending' %}
+                    <h5 class="text-end btn btn-warning"><b>Status</b> : {{task.status}}</h5>
+                    {% endif %}
+                    {% if task.status == 'Completed' %}
+                    <h5 class="text-end btn btn-success"><b>Status</b> : {{task.status}}</h5>
+                    {% endif %}
+                    {% if task.status == 'In Progress' %}
+                    <h5 class="text-end btn btn-primary"><b>Status</b> : {{task.status}}</h5>
+                    {% endif %}
+                </div>
+                <div class="d-flex">
+                    <p class="me-auto" style="max-width: 70%;"><b>Description</b> : {{task.description | truncatewords:10}}</p>
+                    <p class="text-end"><b>Due Date</b> : {{task.due_date}}</p>
+                </div>
+                <div class="d-flex" style="color: rgb(179, 179, 179);">
+                    <p class="me-auto">Updated at : {{task.updated_at}}</p>
+                    <p class="text-end">Created at : {{task.created_at}}</p>
+                </div>
+            </div>
+        </div><br>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

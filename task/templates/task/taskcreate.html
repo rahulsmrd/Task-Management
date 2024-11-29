@@ -1,0 +1,32 @@
+{% extends 'task/base.html' %}
+{% block create_activate %}active{% endblock %}
+{% block body %}
+<h1 class="text-center mb-4">Create a Task</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-5">
+                {{ form.title.label }} : <br>
+                {{ form.title }}
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-3">
+                {{ form.due_date.label }} : <br>
+                {{ form.due_date }}
+            </div>
+            <div class="col-md-3">
+                {{ form.status.label }} : <br>
+                {{ form.status }}
+            </div>
+        </div><br>
+        {{ form.description.label }} : <br>
+        {{ form.description }}
+        <br>
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <button class="btn btn-outline-success form-control">Save</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

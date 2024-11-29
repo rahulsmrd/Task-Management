@@ -1,0 +1,68 @@
+{% extends 'task/base.html' %}
+
+{% block body %}
+
+<h1 class="text-center m-5">SignUp !!!</h1>
+<div class="container mx-5" style="color: red;">
+    {{ form.errors }}
+</div>
+
+<div class="container">
+    <div class="container">
+        <form method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-5">
+                    {{ form.email.label }}: <br>
+                    {{ form.email }}
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-5">
+                    {{ form.name.label }}: <br>
+                    {{ form.name }}
+                </div>
+            </div><br>
+            <div class="row">
+                <div class="col-md-5">
+                    {{ form.password1.label }}: <br>
+                    {{ form.password1 }}
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-5">
+                    {{ form.password2.label }}: <br>
+                    {{ form.password2 }}
+            </div>
+            <div class="row">
+                <div class="col-md-5">
+                    {{form.password1.help_text}}
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-5">
+                    {{form.password2.help_text}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-5">
+                    {{ form.first_name.label }}: <br>
+                    {{ form.first_name }}
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-5">
+                    {{ form.last_name.label }}: <br>
+                    {{ form.last_name }}
+            </div>
+            {{ form.usable_password }}
+            <button type="submit" class="btn btn-outline-success m-4 px-4 fs-5 mb-5">SignUp</button>
+        </form>
+    </div>
+</div>
+<script>
+    pass1 = document.getElementById('id_password1');
+    pass2 = document.getElementById('id_password2');
+    use_pass = document.getElementById('id_usable_password');
+    pass1.classList.add('form-control');
+    pass2.classList.add('form-control');
+    use_pass.style.display = 'none';
+</script>
+
+{% endblock %}

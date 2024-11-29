@@ -1,0 +1,9 @@
+a = 1234
+temp = a
+s = 0
+while temp > 0:
+    rem = temp%10 # 4 3 2 1
+    s += rem       # 4
+    temp = temp // 10 # tem = 123 
+
+print(s)

@@ -1,0 +1,93 @@
+{% extends 'task/base.html' %}
+{% block body %}
+<div class="container">
+    <p><b>Note :</b>In the view of the testing I have made a open registration to Admin User, you can access it through <b>'task/signup/admin/' </b></p>
+    <h1 class="text-center">Welcome to Your Task Manager !!!</h1>
+    <div class="row">
+        <div class="col-md-6">
+            <h4>What you can do here :</h4>
+            <ul>
+                <li>Create a Task.</li>
+                <li>Update your present Task.</li>
+                <li>Change the Status of your Task.</li>
+                <li>Delete a Task when completed.</li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h4>For Developers</h4>
+            <ul>
+                <li>A Neat representation of all the APIs using Swagger is available.</li>
+                <li>All APIs follow RESTfull principles.</li>
+                <li>Easy Access, Integration and secure APIs.</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Tough Security Principles</h4>
+            <ul>
+                <li>Credentials of the User are stored following most secure methods.</li>
+                <li>Passwords are Hashed using PBKDF2 algorithm with a SHA256 hash.</li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h4>Developers Security</h4>
+            <ul>
+                <li>Used a most Authentic and  Secure method for our Database security.</li>
+                <li>Followed JWT Authentication, DRF Token Authenctication for validating the usage of APIs</li>
+                <li>Token Changing for every stipulated time frame, makes a more Rigid layer to security.</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Who can do What</h4>
+            <h6>Guest User</h6>
+            <ul>
+                <li>User logIn</li>
+                <li>User Register.</li>
+                <li>Create tasks.</li>
+                <li>Update tasks.</li>
+                <li>View all the tasks of the user.</li>
+                <li>Detail view of a particular Task of that user.</li>
+                <li>Delete their own task.</li>
+            </ul>
+            <h6>Admin</h6>
+            <ul>
+                <li>Can See all the task irrespective of the user.</li>
+                <li>Can delete a Task if found any illegal terms.</li>
+                <li>Can edit/update a Task, removing any illegal terms.</li>
+            </ul>
+            <h6>SuperUser</h6>
+            <ul>
+                <li>Can Create Admin Users</li>
+                <li>Can See all the task irrespective of the user.</li>
+                <li>Can delete a Task if found any illegal terms.</li>
+                <li>Can edit/update a Task, removing any illegal terms.</li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h4>Developers APIs</h4>
+            <ul>
+                <li>Register User</li>
+                <li>LogIn User</li>
+                <li>Get Token for User</li>
+                <li>Get User Profile</li>
+                <li>Update User Profile</li>
+                <li>Get all the Tasks of User</li>
+                <li>Get detail of the Task of User</li>
+                <li>Update a Task of User</li>
+                <li>Delete a Task of User</li>
+                <li>Change the status of the Task of a User</li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <h2>Summary :</h2>
+        <h4><b>Tech Stack Used : </b> Python, Django, Django REST framework, HTML, CSS, JavaScript, Bootstrap, SQLite</h4>
+        <h4><b>Security Methods Used : </b>Hashing by PBKDF2 algorithm with a SHA256 hash, JWT Authentication, DRF Token Authenctication</h4>
+        <h4>Implemented 3 types of users, and assigning some basic rules to them.</h4>
+        <h4>Made RESTfull APIs, in prespective of Developers.</h4>
+    </div>
+</div>
+{% endblock %}

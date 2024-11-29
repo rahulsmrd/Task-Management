@@ -1,0 +1,46 @@
+{% extends 'task/base.html' %}
+{% block body %}
+<h1 class="text-center"><u>About the Task</u></h1>
+<h3 class="text-center"><b>"{{task}}"</b></h3>
+<div class="card">
+    <div class="card-body">
+
+        <p class="text-end" style="color: rgb(106, 106, 106);"><b>Task ID</b> : {{ task.task_id }}</p>
+
+        <label for="title" class="fs-5">Title :</label>
+        <input type="text" class="form-control" id="title" readonly value="{{task.title}}"><br>
+
+        <div class="row">
+            <div class="col-md-4">
+                <label for="status" class="fs-5">Status :</label>
+                <input type="text" class="form-control" id="status" value="{{task.status}}" readonly>
+            </div>
+            <div class="col-md-4">
+                <label for="date" class="fs-5">Due Date :</label>
+                <input type="text" class="form-control" id="date" value="{{task.due_date}}" readonly>
+            </div>
+            <div class="col-md-4">
+                <label for="user" class="fs-5">Performer of the Task</label>
+                <input type="text" class="form-control" id="user" value="{{task.user}}" readonly>
+            </div>
+        </div><br>
+
+        <label for="description" class="fs-5">Description</label>
+        <textarea class="form-control" id="description" rows="5" readonly>{{ task.description }}</textarea><br>
+        
+        <div class="row">
+            <div class="col-md-3">
+                <a href="{% url 'task:delete_task' task.id %}" class="form-control btn btn-outline-danger">Delete</a>
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-3">
+                <a href="{% url 'task:update_task' task.id %}" class="form-control btn btn-outline-primary">Update</a>
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-3">
+                <a href="{% url 'task:task_list' %}" class="form-control btn btn-outline-warning">Back to List</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

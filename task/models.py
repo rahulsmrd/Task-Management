@@ -26,7 +26,15 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
 
         return user
-
+    
+    def create_admin(self, email, password):
+        '''Create Admin'''
+        if not email:
+            raise ValueError("User must have an email address")
+        user = self.create_user(email, password)
+        user.is_admin = True
+        user.save(using=self._db)
+        return user
 
 class User(AbstractBaseUser, PermissionsMixin):
 
@@ -34,6 +42,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
+    is_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     objects = UserManager()
@@ -43,12 +52,17 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class TaskModel(models.Model):
+    STATUS_CHOICES = [
+        ('Pending', 'Pending'), 
+        ('In Progress', 'In Progress'), 
+        ('Completed', 'Completed')
+    ]
     user = models.ForeignKey(User, related_name='TaskUser', on_delete=models.CASCADE, default=None)
     task_id = models.IntegerField(unique=True)
     title = models.CharField(max_length=255)
     description = models.TextField()
     due_date = models.DateField()
-    status = models.CharField(max_length=15, choices=[('pending', 'pending'), ('in_progress', 'in_progress'), ('completed', 'completed')])
+    status = models.CharField(max_length=15, choices=STATUS_CHOICES)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     

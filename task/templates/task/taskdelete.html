@@ -1,0 +1,21 @@
+{% extends 'task/base.html' %}
+{% block body %}
+<form method="post">
+    {% csrf_token %}
+    <div class="card">
+        <div class="card-body">
+            <h1>Are you sure you want to delete the task <b><u>{{delete_task}} </u></b>?</h1><br><br>
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-danger form-control" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                </div>
+                <div class="col-md-4">
+                    <a href="{% url 'task:task_detail' delete_task.id %}" class="btn btn-primary form-control">Cancle</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+    
+{% endblock %}
