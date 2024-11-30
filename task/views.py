@@ -1,22 +1,27 @@
-from django.http import HttpRequest, HttpResponse
+# Backend Modules
+from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect
 from django.contrib.auth import views as auth_views
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user_model
+
+# API Modules
 from rest_framework import viewsets, status, generics, authentication, permissions
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
 from rest_framework.response import Response
-from datetime import datetime
 
+# Database, Serializers Modules
+from datetime import datetime
 from task.models import TaskModel
 from task.serializers import TaskSerializer, UserSerializer, AuthTokenSerializer
 from task.forms import UserCreateForm, TaskCreationForm
 
 # Create your views here.
 
+# <----------------- Views for Backend Application -------------------------->
 def homeView(request):
     return render(request,'task/home.html')
 
@@ -26,21 +31,30 @@ def signupUser(request):
         if user_form.is_valid():
             user_form.save()
         else:
-            return render(request,'task/signup.html', {'form': UserCreateForm, 'errors': UserCreateForm.errors})
+            return render(request,'task/signup.html', {'form': user_form})
         return redirect(reverse('login'))
-    return render(request,'task/signup.html', {'form': UserCreateForm()})
+    return render(request,'task/signup.html', {'form': UserCreateForm})
 
 def signupAdmin(request):
     if request.method == 'POST':
         user_form = UserCreateForm(request.POST)
-        if user_form.is_valid():
-            user_form.save(commit=False)
-            user_form.instance.is_admin = True
-            user_form.save()
-        else:
-            return render(request,'task/signup.html', {'form': UserCreateForm, 'errors': UserCreateForm.errors})
-        return redirect(reverse('login'))
-    return render(request,'task/signup.html', {'form': UserCreateForm()})
+        email = request.POST.get('email')
+        password = request.POST.get('password1')
+        try:
+            user_exists = get_user_model().objects.get(email=email)
+            if user_exists:
+                user_exists.is_admin = True
+                user_exists.set_password(password)
+                user_exists.save()
+        except get_user_model().DoesNotExist:
+            if user_form.is_valid():
+                user_form.save(commit=False)
+                user_form.instance.is_admin = True
+                user_form.save()
+            else:
+                return render(request,'task/signup.html', {'form': user_form})
+        return redirect(reverse('task:task_list'))
+    return render(request,'task/signup.html', {'form': UserCreateForm})
 
 class LogoutView(auth_views.LogoutView):    
     def get_success_url(self):
@@ -51,7 +65,6 @@ class TaskListView(ListView, LoginRequiredMixin):
     context_object_name = 'task_list'
     template_name = 'task/tasklist.html'
     def get_queryset(self):
-        print('Task list')
         if self.request.user.is_superuser or self.request.user.is_admin:
             self.queryset = TaskModel.objects.all().order_by('-due_date')
         else:
@@ -62,11 +75,15 @@ class DetailTaskView(DetailView, LoginRequiredMixin):
     model = TaskModel
     context_object_name = 'task'
     template_name = 'task/taskdetail.html'
-    def get_object(self):
-        if self.request.user.is_superuser or self.request.user.is_admin or self.object.user == self.request.user:
-            return super().get_object()
-        else:
-            return HttpResponse("You are not authorized to view this task", status=403)
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            self.object = self.get_object()
+            if request.user.is_superuser or request.user.is_admin or self.object.user == request.user:
+                return super().dispatch(request, *args, **kwargs)
+            else:
+                return HttpResponse("You are not authorized to view this task", status=403)
+        except Http404:
+            return HttpResponse("Task not found.", status=404)
 
 class CreateTaskView(CreateView, LoginRequiredMixin):
     model = TaskModel
@@ -84,6 +101,16 @@ class UpdateTaskView(UpdateView, LoginRequiredMixin):
     model = TaskModel
     template_name = 'task/taskupdate.html'
     form_class = TaskCreationForm
+
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            self.object = self.get_object()
+            if request.user.is_superuser or request.user.is_admin or self.object.user == request.user:
+                return super().dispatch(request, *args, **kwargs)
+            else:
+                return HttpResponse("You are not authorized to update this task", status=403)
+        except Http404:
+            return HttpResponse("Task not found.", status=404)
     def form_valid(self, form):
         if form.instance.user!= self.request.user:
             return Response({"Error": "You can't update this task"}, status=status.HTTP_403_FORBIDDEN)
@@ -97,6 +124,19 @@ class DeleteTaskView(DeleteView, LoginRequiredMixin):
     template_name = 'task/taskdelete.html'
     context_object_name = 'delete_task'
     success_url = reverse_lazy('task:task_list')
+
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            self.object = self.get_object()
+            if request.user.is_superuser or request.user.is_admin or self.object.user == request.user:
+                return super().dispatch(request, *args, **kwargs)
+            else:
+                return HttpResponse("You are not authorized to Delete this task", status=403)
+        except Http404:
+            return HttpResponse("Task not found.", status=404)
+        
+
+# <------------------- API Views ------------------------------->
 
 class CreateUserView(generics.CreateAPIView):
     serializer_class = UserSerializer
