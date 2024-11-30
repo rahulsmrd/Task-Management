@@ -25,6 +25,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                {% if user.is_authenticated %}
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link {% block list_activate %}{% endblock %}" aria-current="page" href="{% url 'task:task_list' %}">List of Task</a>
@@ -36,6 +37,11 @@
                         <a class="nav-link" href="{% url 'api-docs' %}">API's</a>
                     </li>
                 </ul>
+                {% else %}
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                </ul>
+                </ul>
+                {% endif %}
                 <form class="d-flex" method="post" action="{% url 'task:logout' %}">
                     {% if user.is_authenticated %}
                     {% csrf_token %}
