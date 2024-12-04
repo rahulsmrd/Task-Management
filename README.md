@@ -42,4 +42,4 @@
   - ``` bash
      python manage.py runserver
     ```
-- Navigate to [http://127.0.0.1:8000/api/v1/docs/](http://127.0.0.1:8000/api/v1/docs/)
+- Navigate to [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
